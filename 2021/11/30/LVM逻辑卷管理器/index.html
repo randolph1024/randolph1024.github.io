@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Randolph">
+    
+    <title>
+        
+            LVM逻辑卷管理器 |
+        
+        Dark Hole
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/log.jpg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en","path":"search.json"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#f0f8ff","title":"Dark Hole","author":"Randolph","avatar":"/images/avatar.jpg","logo":"/images/log.jpg","favicon":"/images/log.jpg"},"menu":{"Archives":"/archives","Tags":"/tags","Categories":"/categories","Links":"/links","About":"/about","Baidu":"https://www.baidu.com","Google":"https://www.google.com.hk"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":false},"social_contact":{"enable":true,"links":{"weixin":"img | /images/wechat.jpg","email":"wrz@randolph.wang"}},"scroll":{"progress_bar":false,"percent":true,"hide_header":false},"home":{"category":true,"tag":true,"announcement":"loading.........."},"post":{"author_badge":{"enable":false,"level_badge":false,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":false,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":true,"share":true,"reward":{"enable":true,"img_link":"/images/pay.jpg","text":"请作者喝果汁"}},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"obsidian"},"toc":{"enable":false,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.21"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":false,"provider":"jsdelivr"},"pjax":{"enable":true},"footer":{"since":2021,"word_count":true,"icp":{"enable":false,"record_code":null,"url":"https://beian.miit.gov.cn"},"site_deploy":{"enable":true,"provider":"github","url":null},"shields_style":{"enable":false,"custom":[{"link_url":null,"img_url":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"","version":"4.0.5"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original post title","author":"Original post author","link":"Original post link"}
+  </script>
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+<main class="page-container border-box">
+
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/log.jpg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Dark Hole
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc">
+                <ul class="menu-list">
+                    <li class="menu-item">
+                        <a class=""
+                           href="/"
+                        >HOME</a>
+                    </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >ARCHIVES</a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >TAGS</a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/categories"
+                            >CATEGORIES</a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/links"
+                            >LINKS</a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >ABOUT</a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               target="_blank" rel="noopener" href="https://www.baidu.com"
+                            >BAIDU</a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               target="_blank" rel="noopener" href="https://www.google.com.hk"
+                            >GOOGLE</a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            <li class="drawer-menu-item flex-center">
+                <a class=""
+                   href="/"
+                >HOME</a>
+            </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives"
+                    >ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags"
+                    >TAGS</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/categories"
+                    >CATEGORIES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links"
+                    >LINKS</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about"
+                    >ABOUT</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       target="_blank" rel="noopener" href="https://www.baidu.com"
+                    >BAIDU</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       target="_blank" rel="noopener" href="https://www.google.com.hk"
+                    >GOOGLE</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        LVM逻辑卷管理器
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">Randolph</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-check"></i>&nbsp;
+                <span class="pc">2021-11-30 12:40:31</span>
+                <span class="mobile">2021-11-30 12:40</span>
+            </span>
+
+            <span class="meta-info-item post-update-date">
+                <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                <span class="pc" data-updated="Wed Dec 27 2023 09:40:13 GMT+0800">2023-12-27 09:40:13</span>
+            </span>
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/Linux/">Linux</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <i class="icon fas fa-tags"></i>&nbsp;
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Linux/">Linux</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body">
+                    
+
+                    <p>部署逻辑卷</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">查看当前磁盘</span><br><span class="line">[root@localhost randy]# ls /dev/sd*</span><br><span class="line">/dev/sda  /dev/sda1  /dev/sda2  /dev/sdb  /dev/sdc  /dev/sdd  /dev/sde</span><br><span class="line">创建逻辑卷</span><br><span class="line">[root@localhost randy]# pvcreate /dev/sd[b-c]</span><br><span class="line">  Physical volume &quot;/dev/sdb&quot; successfully created.</span><br><span class="line">  Physical volume &quot;/dev/sdc&quot; successfully created.</span><br><span class="line">创建逻辑卷组</span><br><span class="line">[root@localhost randy]# vgcreate ran /dev/sd[b-c]</span><br><span class="line">  Volume group &quot;ran&quot; successfully created</span><br><span class="line">逻辑卷组切割  -l制定单元大小    -L制定容量大小</span><br><span class="line">[root@localhost randy]# lvcreate -n ra -L 30G ran</span><br><span class="line">  Logical volume &quot;ra&quot; created.</span><br><span class="line">  </span><br><span class="line">LVM仅支持ext3 or 4文件系统</span><br><span class="line">格式化</span><br><span class="line">root@localhost randy]# mkfs.ext4 /dev/ran/ra</span><br><span class="line">mke2fs 1.42.9 (28-Dec-2013)</span><br><span class="line">Filesystem label=</span><br><span class="line">OS type: Linux</span><br><span class="line">Block size=4096 (log=2)</span><br><span class="line">Fragment size=4096 (log=2)</span><br><span class="line">Stride=0 blocks, Stripe width=0 blocks</span><br><span class="line">1966080 inodes, 7864320 blocks</span><br><span class="line">393216 blocks (5.00%) reserved for the super user</span><br><span class="line">First data block=0</span><br><span class="line">Maximum filesystem blocks=2155872256</span><br><span class="line">240 block groups</span><br><span class="line">32768 blocks per group, 32768 fragments per group</span><br><span class="line">8192 inodes per group</span><br><span class="line">Superblock backups stored on blocks: </span><br><span class="line">    32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, </span><br><span class="line">    4096000</span><br><span class="line"></span><br><span class="line">Allocating group tables: done                            </span><br><span class="line">Writing inode tables: done                            </span><br><span class="line">Creating journal (32768 blocks): done</span><br><span class="line">Writing superblocks and filesystem accounting information: done</span><br><span class="line"></span><br><span class="line">挂载</span><br><span class="line">[root@localhost randy]# mkdir /hh</span><br><span class="line">[root@localhost randy]# vim /etc/fstab</span><br><span class="line">/dev/ran/ra ext4 defaults 0 0</span><br><span class="line">自动挂载</span><br><span class="line">[root@localhost randy]# mount -a</span><br><span class="line">查看挂载（磁盘格式化相关文件系统后内存略有缩水）</span><br><span class="line">[root@localhost randy]# df -h</span><br><span class="line">Filesystem               Size  Used Avail Use% Mounted on</span><br><span class="line">/dev/mapper/centos-root   30G  4.5G   25G  16% /</span><br><span class="line">devtmpfs                 3.8G     0  3.8G   0% /dev</span><br><span class="line">tmpfs                    3.9G     0  3.9G   0% /dev/shm</span><br><span class="line">tmpfs                    3.9G   13M  3.8G   1% /run</span><br><span class="line">tmpfs                    3.9G     0  3.9G   0% /sys/fs/cgroup</span><br><span class="line">/dev/sda1                297M  153M  145M  52% /boot</span><br><span class="line">tmpfs                    781M  4.0K  781M   1% /run/user/42</span><br><span class="line">tmpfs                    781M   24K  781M   1% /run/user/1000</span><br><span class="line">/dev/sr0                 4.2G  4.2G     0 100% /run/media/randy/CentOS 7 x86_64</span><br><span class="line">/dev/mapper/ran-ra        30G   45M   28G   1% /hh</span><br></pre></td></tr></table></figure>
+
+<p>扩容逻辑卷</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">[randy@localhost ~]$ df -h</span><br><span class="line">文件系统                 容量  已用  可用 已用% 挂载点</span><br><span class="line">/dev/mapper/centos-root   30G  3.4G   26G   12% /</span><br><span class="line">devtmpfs                 1.7G     0  1.7G    0% /dev</span><br><span class="line">tmpfs                    1.8G     0  1.8G    0% /dev/shm</span><br><span class="line">tmpfs                    1.8G   13M  1.7G    1% /run</span><br><span class="line">tmpfs                    1.8G     0  1.8G    0% /sys/fs/cgroup</span><br><span class="line">/dev/sda1                297M  153M  145M   52% /boot</span><br><span class="line">/dev/mapper/ran-ra       9.8G   37M  9.2G    1% /hh</span><br><span class="line">tmpfs                    351M  4.0K  351M    1% /run/user/42</span><br><span class="line">tmpfs                    351M   24K  351M    1% /run/user/1000</span><br><span class="line">/dev/sr0                 4.2G  4.2G     0  100% /run/media/randy/CentOS 7 x86_64</span><br><span class="line">卸载逻辑卷</span><br><span class="line">[root@localhost randy]# umount /hh</span><br><span class="line">扩展逻辑卷容量</span><br><span class="line">[root@localhost randy]# lvextend -L +300M /dev/ran/ra</span><br><span class="line">  Size of logical volume ran/ra changed from 10.00 GiB (2560 extents) to 10.29 GiB (2635 extents).</span><br><span class="line">  Logical volume ran/ra successfully resized.</span><br><span class="line">检查硬盘的完整性，确认目录结构、内容和文件内容没有丢失。一般情况下没有报错，均为正常情况</span><br><span class="line">[root@localhost randy]# e2fsck -f /dev/ran/ra</span><br><span class="line">e2fsck 1.42.9 (28-Dec-2013)</span><br><span class="line">第一步: 检查inode,块,和大小</span><br><span class="line">第二步: 检查目录结构</span><br><span class="line">第3步: 检查目录连接性</span><br><span class="line">Pass 4: Checking reference counts</span><br><span class="line">第5步: 检查簇概要信息</span><br><span class="line">/dev/ran/ra: 11/655360 files (0.0% non-contiguous), 83137/2621440 blocks</span><br><span class="line">重置设备在系统中的容量。刚刚是对LV（逻辑卷）设备进行了扩容操作，但系统内核还没有同步到这部分新修改的信息，需要手动进行同步</span><br><span class="line">[root@localhost randy]# resize2fs /dev/ran/ra</span><br><span class="line">resize2fs 1.42.9 (28-Dec-2013)</span><br><span class="line">Resizing the filesystem on /dev/ran/ra to 2698240 (4k) blocks.</span><br><span class="line">The filesystem on /dev/ran/ra is now 2698240 blocks long.</span><br><span class="line"></span><br><span class="line">自动挂载</span><br><span class="line">[root@localhost randy]# mount -a</span><br><span class="line">[root@localhost randy]# df -h</span><br><span class="line">文件系统                 容量  已用  可用 已用% 挂载点</span><br><span class="line">/dev/mapper/centos-root   30G  3.4G   26G   12% /</span><br><span class="line">devtmpfs                 1.7G     0  1.7G    0% /dev</span><br><span class="line">tmpfs                    1.8G     0  1.8G    0% /dev/shm</span><br><span class="line">tmpfs                    1.8G   13M  1.7G    1% /run</span><br><span class="line">tmpfs                    1.8G     0  1.8G    0% /sys/fs/cgroup</span><br><span class="line">/dev/sda1                297M  153M  145M   52% /boot</span><br><span class="line">tmpfs                    351M  4.0K  351M    1% /run/user/42</span><br><span class="line">tmpfs                    351M   24K  351M    1% /run/user/1000</span><br><span class="line">/dev/sr0                 4.2G  4.2G     0  100% /run/media/randy/CentOS 7 x86_64</span><br><span class="line">/dev/mapper/ran-ra        11G   41M  9.5G    1% /hh</span><br></pre></td></tr></table></figure>
+
+<p>缩小逻辑卷</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost randy]# umount /hh</span><br><span class="line">检查磁盘是否有损坏   </span><br><span class="line">[root@localhost randy]# e2fsck -f /dev/ran/ra</span><br><span class="line">e2fsck 1.42.9 (28-Dec-2013)</span><br><span class="line">第一步: 检查inode,块,和大小</span><br><span class="line">第二步: 检查目录结构</span><br><span class="line">第3步: 检查目录连接性</span><br><span class="line">Pass 4: Checking reference counts</span><br><span class="line">第5步: 检查簇概要信息</span><br><span class="line">/dev/ran/ra: 11/679936 files (0.0% non-contiguous), 85706/2698240 blocks</span><br><span class="line">通知系统将内存修改到5G</span><br><span class="line">[root@localhost randy]# resize2fs /dev/ran/ra 5G</span><br><span class="line">resize2fs 1.42.9 (28-Dec-2013)</span><br><span class="line">Resizing the filesystem on /dev/ran/ra to 1310720 (4k) blocks.</span><br><span class="line">The filesystem on /dev/ran/ra is now 1310720 blocks long.</span><br><span class="line">Lv命令缩减空间</span><br><span class="line">[root@localhost randy]# lvreduce -L 5G /dev/ran/ra</span><br><span class="line">  WARNING: Reducing active logical volume to 5.00 GiB.</span><br><span class="line">  THIS MAY DESTROY YOUR DATA (filesystem etc.)</span><br><span class="line">Do you really want to reduce ran/ra? [y/n]: y</span><br><span class="line">  Size of logical volume ran/ra changed from 10.29 GiB (2635 extents) to 5.00 GiB (1280 extents).</span><br><span class="line">  Logical volume ran/ra successfully resized.</span><br><span class="line">自动挂载</span><br><span class="line">[root@localhost randy]# mount -a</span><br><span class="line">[root@localhost randy]# df -h</span><br><span class="line">文件系统                 容量  已用  可用 已用% 挂载点</span><br><span class="line">/dev/mapper/centos-root   30G  3.4G   26G   12% /</span><br><span class="line">devtmpfs                 1.7G     0  1.7G    0% /dev</span><br><span class="line">tmpfs                    1.8G     0  1.8G    0% /dev/shm</span><br><span class="line">tmpfs                    1.8G   13M  1.7G    1% /run</span><br><span class="line">tmpfs                    1.8G     0  1.8G    0% /sys/fs/cgroup</span><br><span class="line">/dev/sda1                297M  153M  145M   52% /boot</span><br><span class="line">tmpfs                    351M  4.0K  351M    1% /run/user/42</span><br><span class="line">tmpfs                    351M   28K  351M    1% /run/user/1000</span><br><span class="line">/dev/sr0                 4.2G  4.2G     0  100% /run/media/randy/CentOS 7 x86_64</span><br><span class="line">/dev/mapper/ran-ra       4.8G   33M  4.5G    1% /hh</span><br></pre></td></tr></table></figure>
+
+<p>逻辑卷快照</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">[randy@localhost ~]$ df -h</span><br><span class="line">文件系统                 容量  已用  可用 已用% 挂载点</span><br><span class="line">/dev/mapper/centos-root   30G  3.4G   26G   12% /</span><br><span class="line">devtmpfs                 1.7G     0  1.7G    0% /dev</span><br><span class="line">tmpfs                    1.8G     0  1.8G    0% /dev/shm</span><br><span class="line">tmpfs                    1.8G   13M  1.7G    1% /run</span><br><span class="line">tmpfs                    1.8G     0  1.8G    0% /sys/fs/cgroup</span><br><span class="line">/dev/sda1                297M  153M  145M   52% /boot</span><br><span class="line">/dev/mapper/ran-ra       4.8G   33M  4.5G    1% /hh</span><br><span class="line">tmpfs                    351M  4.0K  351M    1% /run/user/42</span><br><span class="line">tmpfs                    351M   20K  351M    1% /run/user/1000</span><br><span class="line">/dev/sr0                 4.2G  4.2G     0  100% /run/media/randy/CentOS 7 x86_64</span><br><span class="line">查看逻辑卷剩余和使用的内存</span><br><span class="line">[root@localhost randy]# vgdisplay</span><br><span class="line">  --- Volume group ---</span><br><span class="line">  VG Name               ran</span><br><span class="line">  System ID             </span><br><span class="line">  Format                lvm2</span><br><span class="line">  Metadata Areas        2</span><br><span class="line">  Metadata Sequence No  4</span><br><span class="line">  VG Access             read/write</span><br><span class="line">  VG Status             resizable</span><br><span class="line">  MAX LV                0</span><br><span class="line">  Cur LV                1</span><br><span class="line">  Open LV               1</span><br><span class="line">  Max PV                0</span><br><span class="line">  Cur PV                2</span><br><span class="line">  Act PV                2</span><br><span class="line">  VG Size               39.99 GiB</span><br><span class="line">  PE Size               4.00 MiB</span><br><span class="line">  Total PE              10238</span><br><span class="line">  Alloc PE / Size       1280 / 5.00 GiB</span><br><span class="line">  Free  PE / Size       8958 / 34.99 GiB</span><br><span class="line">  VG UUID               4URcXh-G5x8-1I9u-G7q0-1cI2-R1dK-ylqEIM</span><br><span class="line">   </span><br><span class="line">  --- Volume group ---</span><br><span class="line">写入一个测试文件</span><br><span class="line">[root@localhost randy]# echo &quot;this is test file context let&#x27;s say hello word&quot; &gt; /hh/readme.txt</span><br><span class="line">[root@localhost randy]# ll /hh</span><br><span class="line">总用量 20</span><br><span class="line">drwx------. 2 root root 16384 11月 29 09:08 lost+found</span><br><span class="line">-rw-r--r--. 1 root root    47 11月 29 15:21 readme.txt</span><br><span class="line">使使用-s参数生成一个快照卷，使用-L参数指定切割的大小，需要与要做快照的设备容量保持一致。另外，还需要在命令后面写上是针对哪个逻辑卷执行的快照操作，稍后数据也会还原到这个相应的设备上</span><br><span class="line">[root@localhost randy]# lvcreate -s -n snap -L 5G /dev/ran/ra</span><br><span class="line">  Logical volume &quot;snap&quot; created.</span><br><span class="line">[root@localhost randy]# dd if=/dev/zero of=/hh/files count=1 bs=100M</span><br><span class="line">记录了1+0 的读入</span><br><span class="line">记录了1+0 的写出</span><br><span class="line">104857600字节(105 MB)已复制，0.638687 秒，164 MB/秒</span><br><span class="line">查看生成文件</span><br><span class="line">[root@localhost randy]# ll /hh</span><br><span class="line">总用量 102420</span><br><span class="line">-rw-r--r--. 1 root root 104857600 11月 29 16:05 files</span><br><span class="line">drwx------. 2 root root     16384 11月 29 09:08 lost+found</span><br><span class="line">-rw-r--r--. 1 root root        47 11月 29 15:21 readme.txt</span><br><span class="line">取消挂载</span><br><span class="line">[root@localhost randy]# umount /hh</span><br><span class="line">快照还原</span><br><span class="line">[root@localhost randy]# lvconvert --merge /dev/ran/snap</span><br><span class="line">  Merging of volume ran/snap started.</span><br><span class="line">  ran/ra: Merged: 98.22%</span><br><span class="line"></span><br><span class="line">  ran/ra: Merged: 100.00%</span><br><span class="line">自动挂载</span><br><span class="line">[root@localhost randy]# mount -a</span><br><span class="line">查看结果</span><br><span class="line">[root@localhost randy]# ll /hh</span><br><span class="line">总用量 20</span><br><span class="line">drwx------. 2 root root 16384 11月 29 09:08 lost+found</span><br><span class="line">-rw-r--r--. 1 root root    47 11月 29 15:21 readme.txt</span><br></pre></td></tr></table></figure>
+
+<p>删除逻辑卷</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost randy]# umount /hh</span><br><span class="line">[root@localhost randy]# vim /etc/fstab</span><br><span class="line">[root@localhost randy]# lvremove /dev/ran/ra</span><br><span class="line">Do you really want to remove active logical volume ran/ra? [y/n]: y</span><br><span class="line">  Logical volume &quot;ra&quot; successfully removed</span><br><span class="line">[root@localhost randy]# vgremove ran</span><br><span class="line">  Volume group &quot;ran&quot; successfully removed</span><br><span class="line">[root@localhost randy]# pvremove /dev/sd[b-c]</span><br><span class="line">  Labels on physical volume &quot;/dev/sdb&quot; successfully wiped.</span><br><span class="line">  Labels on physical volume &quot;/dev/sdc&quot; successfully wiped.</span><br></pre></td></tr></table></figure>
+
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                LVM逻辑卷管理器
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                2021/11/30/LVM逻辑卷管理器/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    Author
+                </div>
+                <div class="content">Randolph</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    Published
+                </div>
+                <div class="content">2021-11-30 12:40</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    License
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed">
+                        <i class="fa-brands fa-creative-commons"></i>
+                        <i class="fa-brands fa-creative-commons-by"></i>
+                        <i class="fa-brands fa-creative-commons-nc"></i>
+                        <i class="fa-brands fa-creative-commons-sa"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="Copy copyright info" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/Linux/">Linux</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="Share to WeChat"
+            data-tooltip-img-tip="Scan by WeChat"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to WeiBo"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+                    <div class="reward-author-container border-box flex-center">
+    <div class="reward-btn keep-button border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="请作者喝果汁"
+            data-tooltip-img-url="/images/pay.jpg"
+            data-tooltip-img-trigger="click"
+            data-tooltip-img-style="top: -8px;"
+    >
+        <i class="fa-solid fa-hand-holding-heart"></i>
+    </div>
+</div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2022/01/17/Fake-Email_kali/"
+                                   title="Fake.Email_kali"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Fake.Email_kali</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2021/11/22/linux-RAD%E7%A3%81%E7%9B%98%E9%98%B5%E5%88%97/"
+                                   title="linux RAD磁盘阵列"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">linux RAD磁盘阵列</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="border-box website-info-box default">
+        
+            <div class="copyright-info info-item default">
+                &copy;&nbsp;<span>2021</span>&nbsp;-&nbsp;2023
+                
+                    &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Randolph</a>
+                
+            </div>
+
+            <div class="theme-info info-item default">
+                Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+            </div>
+
+            
+
+            
+                
+                <div class="deploy-info info-item default">
+                    
+                        This site is deployed on <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/deploy-provider/github.png"></span>
+                    
+                </div>
+            
+        
+
+        <div class="count-item info-item default">
+            
+
+            
+                <span class="count-box border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-box border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="tools-list border-box">
+        <!-- PC TOC show toggle -->
+        
+
+        <!-- PC go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-toggle-theme-mode flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+</main>
+
+
+
+<!-- common -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local-search -->
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="pjax">
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+
+        <!-- copyright-info -->
+        
+            
+<script src="/js/post/copyright-info.js"></script>
+
+        
+
+        <!-- share -->
+        
+            
+<script src="/js/post/share.js"></script>
+
+        
+    
+
+    <!-- category-page -->
+    
+
+    <!-- links-page -->
+    
+
+    <!-- photos-page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>
