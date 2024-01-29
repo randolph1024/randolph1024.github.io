@@ -240,7 +240,7 @@
 
             <span class="meta-info-item post-update-date">
                 <i class="icon fa-solid fa-file-pen"></i>&nbsp;
-                <span class="pc" data-updated="Fri Jan 05 2024 14:53:54 GMT+0800">2024-01-05 14:53:54</span>
+                <span class="pc" data-updated="Mon Jan 29 2024 17:53:32 GMT+0800">2024-01-29 17:53:32</span>
             </span>
         
 
@@ -289,7 +289,17 @@
                     
 
                     <p>操作系统版本、服务器型号和制造商,SN</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">查询系统制造商和产品名：</span><br><span class="line">wmic csproduct get vendor, name</span><br><span class="line">查询基本系统信息：</span><br><span class="line">systeminfo</span><br><span class="line">查询Windows的序列号</span><br><span class="line">wmic bios get serialnumber</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">查询系统制造商和产品名：</span><br><span class="line">wmic csproduct get vendor, name</span><br><span class="line">查询基本系统信息：</span><br><span class="line">systeminfo</span><br><span class="line">查询Windows的序列号</span><br><span class="line">wmic bios get serialnumber</span><br><span class="line">网络选项卡设置</span><br><span class="line">inetcpl.cpl</span><br></pre></td></tr></table></figure>
+
+<p>Windows杂症</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">win10重新部署winstore  admin-powershell</span><br><span class="line">Get-AppXPackage *WindowsStore* -AllUsers | Foreach &#123;Add-AppxPackage -DisableDevelopmentMode -Register &quot;$($_.InstallLocation)\AppXManifest.xml&quot;&#125;</span><br><span class="line"></span><br><span class="line">Bitlocker   解密-忘记密码后</span><br><span class="line">####manage-bde -unlock F: -RecoveryPassword 083424-409046-107448-043967-593714-367070-608410-622149</span><br><span class="line"></span><br><span class="line">组策略gpedit.msc</span><br><span class="line">注册表regedit</span><br><span class="line"></span><br><span class="line">Windows Defender Firewall防火墙不能自启解决方法</span><br><span class="line">win+R组合键，输入regedit打开注册表，HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WdNisSvc的数值改成2。然后重启。</span><br><span class="line"></span><br><span class="line">msinfo32打开系统信息，在软件环境，Windows错误报告下，找到关于Windows Search的错误</span><br></pre></td></tr></table></figure>
+
+<p>Windows进程故障导致不显示桌面图标+任务栏</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">启动任务管理器:</span><br><span class="line">1.按下 Ctrl + Shift + Esc 键打开任务管理器。</span><br><span class="line">如果任务管理器也无法打开，你可以尝试按 Ctrl + Alt + Delete 键，然后选择“任务管理器”。</span><br><span class="line">2.重启Windows资源管理器:</span><br><span class="line">在任务管理器中，找到“进程”标签页。</span><br><span class="line">寻找“Windows资源管理器”或“Explorer.exe”进程。</span><br><span class="line">如果找到了，点击它，然后选择“重启”按钮（在右下角）。这将重新启动资源管理器进程。</span><br><span class="line">如果没有找到，你可以手动启动它。点击任务管理器左下角的“文件”菜单，选择“运行新任务”，输入“explorer.exe”，然后按回车。</span><br><span class="line">3.检查系统文件:</span><br><span class="line">如果问题持续存在，可能是由于系统文件损坏。你可以使用系统文件检查器工具（SFC）来修复它们。打开命令提示符（以管理员身份），输入 sfc /scannow，然后按回车。</span><br><span class="line">4.考虑系统还原:</span><br><span class="line">如果以上步骤都无法解决问题，你可能需要考虑执行系统还原，将计算机恢复到之前的状态。</span><br><span class="line">5.查看是否有病毒或恶意软件:</span><br><span class="line">运行你的防病毒软件进行全面扫描，确保没有病毒或恶意软件导致了这个问题。</span><br><span class="line">6.更新或重新安装显卡驱动程序:</span><br><span class="line">有时驱动程序问题也会导致显示问题。尝试更新或重新安装显卡驱动程序。</span><br></pre></td></tr></table></figure>
+
+<p>Windows服务器升级</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">兼容性检查：确保您的硬件与Windows Server目标版本兼容</span><br><span class="line">数据备份：备份所有重要数据，包括系统状态和配置</span><br><span class="line">查阅文档：按照微软官方文档中详述的升级过程</span><br><span class="line">https://learn.microsoft.com/zh-cn/windows-server/get-started/upgrade-overview</span><br><span class="line">更新当前系统：升级Windows Server最新更新</span><br><span class="line">在非生产环境中测试：如果可能，先在非关键环境中进行测试升级</span><br><span class="line">计划停机时间：在最小影响期间安排升级</span><br><span class="line">执行升级：使用Windows Server安装开始升级过程，并选择保留文件、设置和应用程序的选项</span><br></pre></td></tr></table></figure>
+
 
                 </div>
 
@@ -403,6 +413,22 @@
 
                 
                     <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2024/01/17/MacServer/"
+                                   title="MacServer"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">MacServer</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
                         
                         
                             <div class="next-post">
